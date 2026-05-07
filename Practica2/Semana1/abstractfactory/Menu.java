@@ -15,10 +15,10 @@ public abstract class Menu {
     public void asignarPlato(Plato plato) {
         platos.add(plato);
     }
-
+// REFACTORIZACIÓN (Semana 1 - Nombrado): Se cambia la variable de una sola letra 'p' por un nombre descriptivo 'plato' (Regla 6).
     public void mostrarMenu() {
-        for (Plato p : platos) {
-            System.out.println("  - " + p.toString());
+        for (Plato plato : platos) {
+            System.out.println("  - " + plato.toString());
         }
         System.out.println("  TOTAL: " + String.format("%.2f", calcularPrecio()) + "€\n");
     }
