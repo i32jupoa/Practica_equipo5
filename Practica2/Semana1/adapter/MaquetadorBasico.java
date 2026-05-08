@@ -4,7 +4,8 @@ import java.io.*;
 
 public class MaquetadorBasico {
 
-    // 1) Añadir texto, recibido como String, al final de un archivo [cite: 92]
+    // REFACTORIZACIÓN (Semana 2 - Comentarios): Se eliminan los comentarios redundantes en la cabecera de los métodos, ya que los nombres de los métodos y sus parámetros son suficientemente claros y autoexplicativos (Regla 4).
+    
     public void anadirTextoAlFinal(String texto, File archivo) {
         try (FileWriter fw = new FileWriter(archivo, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
@@ -15,7 +16,6 @@ public class MaquetadorBasico {
         }
     }
 
-    // 2) Extraer un párrafo de un archivo de texto, indicando la línea de inicio y fin [cite: 93]
     public String extraerParrafo(File archivo, int lineaInicio, int lineaFin) {
         StringBuilder parrafo = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
@@ -34,7 +34,6 @@ public class MaquetadorBasico {
         return parrafo.toString();
     }
 
-    // 3) Dividir un fichero de texto en dos, dando un número de línea para realizar el corte [cite: 94]
     public void dividirFichero(File archivoOrigen, int lineaCorte, File archivoDestino1, File archivoDestino2) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivoOrigen));
              BufferedWriter bw1 = new BufferedWriter(new FileWriter(archivoDestino1));
