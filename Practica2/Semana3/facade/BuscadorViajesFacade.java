@@ -14,37 +14,46 @@ public class BuscadorViajesFacade {
         this.turismoCordoba = new OficinaTurismoCordoba();
     }
 
+    // REFACTORIZACIÓN (Semana 3 - Funciones): Se divide una función enorme que hacía demasiadas cosas en varias funciones privadas más pequeñas, respetando el principio de responsabilidad única (Reglas 1 y 3 de Funciones).
     public void buscarViajeCompleto(String fechaInicio, String fechaFin, String origen, String destino) {
+        imprimirCabecera(origen, destino, fechaInicio, fechaFin);
+        mostrarOpcionesTransporte(origen, destino, fechaInicio, fechaFin);
+        mostrarOpcionesAlojamiento(destino, fechaInicio, fechaFin);
+        mostrarActividadesCulturales(destino, fechaInicio, fechaFin);
+        System.out.println("=========================================================\n");
+    }
+
+    private void imprimirCabecera(String origen, String destino, String fechaInicio, String fechaFin) {
         System.out.println("\n=========================================================");
         System.out.println("BÚSQUEDA DE VIAJE: " + origen + " -> " + destino);
         System.out.println("Fechas: " + fechaInicio + " al " + fechaFin);
         System.out.println("=========================================================");
+    }
 
-        // 1. Buscar Transporte
+    private void mostrarOpcionesTransporte(String origen, String destino, String fechaInicio, String fechaFin) {
         System.out.println("\n✈️  Opciones de Transporte:");
         List<String> transportes = transporte.buscarTransporte(origen, destino, fechaInicio, fechaFin);
         if (transportes.isEmpty()) System.out.println("   No hay transportes disponibles.");
         else transportes.forEach(t -> System.out.println("   - " + t));
+    }
 
-        // 2. Buscar Alojamiento
+    private void mostrarOpcionesAlojamiento(String destino, String fechaInicio, String fechaFin) {
         System.out.println("\n🏨 Opciones de Alojamiento:");
         List<String> alojamientos = alojamiento.buscarAlojamiento(destino, fechaInicio, fechaFin);
         if (alojamientos.isEmpty()) System.out.println("   No hay alojamientos disponibles.");
         else alojamientos.forEach(a -> System.out.println("   - " + a));
+    }
 
-        // 3. Buscar Actividades Culturales (Adaptándose a las APIs específicas)
+    private void mostrarActividadesCulturales(String destino, String fechaInicio, String fechaFin) {
         System.out.println("\n🎭 Actividades en destino:");
         if (destino.equalsIgnoreCase("Madrid")) {
-            // Madrid solo busca por un día específico, asumimos que sugerimos cosas para el primer día
             List<String> actividades = turismoMadrid.buscarEventosPorFecha(fechaInicio);
             actividades.forEach(act -> System.out.println("   - " + act));
         } else if (destino.equalsIgnoreCase("Córdoba")) {
-            // Córdoba busca por tipo y rango completo
             List<String> actividades = turismoCordoba.buscarEventos("Cultural", fechaInicio, fechaFin);
             actividades.forEach(act -> System.out.println("   - " + act));
         } else {
             System.out.println("   No tenemos oficina de turismo registrada para " + destino);
         }
-        System.out.println("=========================================================\n");
     }
 }
