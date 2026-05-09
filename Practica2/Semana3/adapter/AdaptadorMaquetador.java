@@ -19,21 +19,22 @@ public class AdaptadorMaquetador implements MaquetadorAvanzado {
     }
 
     // REFACTORIZACIÓN (Semana 1 - Nombrado): Se sustituyen abreviaturas (p1, p2) y variables numeradas por nombres con sentido (Regla 4).
+    // REFACTORIZACIÓN (Semana 3 - Funciones): Se extrae el bloque condicional repetitivo a la función privada "procesarParrafoSiExiste", reduciendo los niveles de anidamiento de la función original.
     @Override
     public void combinarFicheros(File fichero1, File fichero2, List<int[]> parrafosFichero1, List<int[]> parrafosFichero2, File ficheroDestinoFinal) {
         int maxSize = Math.max(parrafosFichero1.size(), parrafosFichero2.size());
         
         for (int i = 0; i < maxSize; i++) {
-            if (i < parrafosFichero1.size()) {
-                int[] rangoLineasFichero1 = parrafosFichero1.get(i);
-                String textoParrafo1 = maquetadorBasico.extraerParrafo(fichero1, rangoLineasFichero1[0], rangoLineasFichero1[1]);
-                maquetadorBasico.anadirTextoAlFinal(textoParrafo1, ficheroDestinoFinal);
-            }
-            if (i < parrafosFichero2.size()) {
-                int[] rangoLineasFichero2 = parrafosFichero2.get(i);
-                String textoParrafo2 = maquetadorBasico.extraerParrafo(fichero2, rangoLineasFichero2[0], rangoLineasFichero2[1]);
-                maquetadorBasico.anadirTextoAlFinal(textoParrafo2, ficheroDestinoFinal);
-            }
+            procesarParrafoSiExiste(fichero1, parrafosFichero1, i, ficheroDestinoFinal);
+            procesarParrafoSiExiste(fichero2, parrafosFichero2, i, ficheroDestinoFinal);
+        }
+    }
+
+    private void procesarParrafoSiExiste(File ficheroOrigen, List<int[]> parrafos, int indiceActual, File destino) {
+        if (indiceActual < parrafos.size()) {
+            int[] rangoLineas = parrafos.get(indiceActual);
+            String textoParrafo = maquetadorBasico.extraerParrafo(ficheroOrigen, rangoLineas[0], rangoLineas[1]);
+            maquetadorBasico.anadirTextoAlFinal(textoParrafo, destino);
         }
     }
 
