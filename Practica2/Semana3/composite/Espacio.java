@@ -22,22 +22,17 @@ public class Espacio implements ComponenteEnergetico {
         componentes.remove(componente);
     }
 
+    // REFACTORIZACIÓN MANUAL (Semana 4): "Replace Loop with Pipeline". Se sustituyen los bucles for
+    // tradicionales por la API de Streams de Java para calcular el total matemáticamente.
     @Override
     public double getConsumoEstimado() {
-        double consumoTotal = 0;
-        for (ComponenteEnergetico componente : componentes) {
-            consumoTotal += componente.getConsumoEstimado();
-        }
-        return consumoTotal;
+        return componentes.stream().mapToDouble(ComponenteEnergetico::getConsumoEstimado).sum();
     }
 
+    // REFACTORIZACIÓN MANUAL (Semana 4): "Replace Loop with Pipeline".
     @Override
     public double getCosteEstimado(double precioKwh) {
-        double costeTotal = 0;
-        for (ComponenteEnergetico componente : componentes) {
-            costeTotal += componente.getCosteEstimado(precioKwh);
-        }
-        return costeTotal;
+        return componentes.stream().mapToDouble(comp -> comp.getCosteEstimado(precioKwh)).sum();
     }
 
     @Override
